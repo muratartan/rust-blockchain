@@ -1,5 +1,5 @@
 [package]
-name = "patika-week-2-1st"
+name = "blockchain-in-rust"
 version = "0.1.0"
 edition = "2021"
 
