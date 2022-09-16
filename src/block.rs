@@ -9,3 +9,9 @@ pub struct Block {
     pub nonce: u64,
     pub payload: String,
 }
+
+impl Debug for Block {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        write!(f, "Block")
+    }
+}
