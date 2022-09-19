@@ -1,21 +1,19 @@
-use blockchainlib::block::Block;
-use blockchainlib::Hashable;
+use blockchainlib::*;
 
 fn main() {
-    let mut block = Block::new(
-        0,
-        0,
-        vec![0; 32],
-        0,
-        "Genesis block".to_owned(),
-        0x000fffffffffffffffffffffffffffff,
-    );
+    let difficulty = 0x000fffffffffffffffffffffffffffff;
 
-    block.hash = block.hash();
+    let mut blockchain = Blockchain {
+        blocks: vec![block],
+    };
 
-    println!("{:?}", &block);
+    for i in 1..=10 {
+        let mut block = Block::new(i, 0, vec![0; 32], 0, "Another block".to_owned(), difficulty);
 
-    block.mine();
+        block.mine();
 
-    println!("{:?}", &block);
+        println!(" mined genesis block {:?}", &block);
+
+        blockchain.blocks.push(block);
+    }
 }
