@@ -1,10 +1,21 @@
 use super::*;
 
+#[derive(Debug)]
+pub enum BlockValidationErr {
+    MismatchedIndex,
+    InvalidHash,
+    AchronologicalTimestamp,
+    MismatchedPreviousHash,
+    InvalidGenesisBlockFormat,
+    InvalidInput,
+    InsufficientInputValue,
+    InvalidCoinbaseTransaction,
+}
 pub struct Blockchain {
     pub blocks: Vec<Block>,
 }
 impl Blockchain {
-    pub fn verify(&self) -> bool {
+    pub fn update_with_block(&mut self, block: Block) -> bool {
         for (i, block) in self.blocks.iter().enumerate() {
             if block.index != i as u32 {
                 println!(" index mismatch {} != {}", &block.index, &i);
