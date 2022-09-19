@@ -15,10 +15,11 @@ impl Debug for Block {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(
             f,
-            "Block[{}]: {} at: {} with: {}",
+            "Block[{}]: {} at: {} with: {} nonce: {}",
             &self.index,
             &hex::encode(&self.hash),
             &self.timestamp,
+            &self.payload,
             &self.nonce,
         )
     }
@@ -71,6 +72,6 @@ impl Hashable for Block {
     }
 }
 
-pub fn check_difficulty(hash: BlockHash, difficulty: u128) -> bool {
+pub fn check_difficulty(hash: &BlockHash, difficulty: u128) -> bool {
     difficulty > difficulty_bytes_as_u128(&hash)
 }
