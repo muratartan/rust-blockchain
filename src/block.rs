@@ -30,7 +30,6 @@ impl Block {
         index: u32,
         timestamp: u128,
         prev_block_hash: Hash,
-        nonce: u64,
         transactions: Vec<Transaction>,
         difficulty: u128,
     ) -> Self {

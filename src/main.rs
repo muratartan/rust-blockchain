@@ -25,33 +25,52 @@ fn main() {
 
     genesis_block.mine();
 
-    println!(" mined genesis block {:?}", &block);
+    println!(" mined genesis block {:?}", &genesis_block);
 
-    let mut last_hash = block.hash.clone();
+    let last_hash = genesis_block.hash.clone();
 
-    let mut blockchain = Blockchain {
-        blocks: vec![block],
-    };
+    let mut blockchain = Blockchain::new();
 
-    println!(" verify: {}", &blockchain.verify());
+    blockchain
+        .update_with_block(genesis_block)
+        .expect("failed to add genesis block");
 
-    for i in 1..=10 {
-        let mut block = Block::new(
-            i,
-            now(),
-            last_hash,
-            0,
-            "Another block".to_owned(),
-            difficulty,
-        );
+    let mut block = Block::new(
+        1,
+        now(),
+        last_hash,
+        vec![
+            Transaction {
+                inputs: vec![],
+                outputs: vec![transaction::Output {
+                    to_addr: "Chris".to_owned(),
+                    value: 536,
+                }],
+            },
+            Transaction {
+                inputs: vec![blockchain.blocks[0].transactions[0].outputs[0].clone()],
+                outputs: vec![
+                    transaction::Output {
+                        to_addr: "Alice".to_owned(),
+                        value: 36,
+                    },
+                    transaction::Output {
+                        to_addr: "Bob".to_owned(),
+                        value: 12,
+                    },
+                ],
+            },
+        ],
+        difficulty,
+    );
 
-        block.mine();
+    block.mine();
 
-        println!(" mined block {:?}", &block);
+    println!(" mined block {:?}", &block);
 
-        last_hash = block.hash.clone();
+    // last_hash = block.hash.clone();
 
-        blockchain.blocks.push(block);
-        println!(" verify: {}", &blockchain.verify());
-    }
+    blockchain
+        .update_with_block(block)
+        .expect("failed to add block");
 }
